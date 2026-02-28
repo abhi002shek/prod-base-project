@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 616919332376.dkr.ecr.ap-south-1.amazonaws.com/prod-base-project/frontend:latest
+        image: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/prod-base-project/frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

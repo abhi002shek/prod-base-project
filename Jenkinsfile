@@ -7,8 +7,8 @@ pipeline {
     
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
-        AWS_REGION = 'ap-south-1'
-        AWS_ACCOUNT_ID = '616919332376'
+        AWS_REGION = '<YOUR_AWS_REGION>'
+        AWS_ACCOUNT_ID = '<YOUR_AWS_ACCOUNT_ID>'
         ECR_FRONTEND = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod-base-project/frontend"
         ECR_BACKEND = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/prod-base-project/backend"
         EKS_CLUSTER = 'production-prod-base-project-eks'
