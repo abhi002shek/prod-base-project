@@ -127,25 +127,25 @@ variable "secrets_manager_arns" {
 variable "vpc_cni_version" {
   description = "VPC CNI addon version"
   type        = string
-  default     = "v1.15.1-eksbuild.1"
+  default     = "v1.21.1-eksbuild.3"
 }
 
 variable "coredns_version" {
   description = "CoreDNS addon version"
   type        = string
-  default     = "v1.10.1-eksbuild.6"
+  default     = "v1.11.4-eksbuild.28"
 }
 
 variable "kube_proxy_version" {
   description = "Kube-proxy addon version"
   type        = string
-  default     = "v1.28.2-eksbuild.2"
+  default     = "v1.32.11-eksbuild.5"
 }
 
 variable "ebs_csi_version" {
   description = "EBS CSI driver addon version"
   type        = string
-  default     = "v1.25.0-eksbuild.1"
+  default     = "v1.56.0-eksbuild.1"
 }
 
 variable "tags" {
