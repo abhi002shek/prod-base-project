@@ -1,0 +1,17 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+!terraform.tfvars.example
+
+# Sensitive
+*.pem
+*.key
+secrets/
+
+# OS
+.DS_Store
+*.swp
+*.swo
