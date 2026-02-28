@@ -112,13 +112,15 @@ pipeline {
         stage('Push to ECR') {
             steps {
                 script {
-                    sh '''
-                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                        docker push ${ECR_FRONTEND}:${BUILD_NUMBER}
-                        docker push ${ECR_FRONTEND}:latest
-                        docker push ${ECR_BACKEND}:${BUILD_NUMBER}
-                        docker push ${ECR_BACKEND}:latest
-                    '''
+                    withCredentials([aws(credentialsId: 'aws-creds', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh '''
+                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                            docker push ${ECR_FRONTEND}:${BUILD_NUMBER}
+                            docker push ${ECR_FRONTEND}:latest
+                            docker push ${ECR_BACKEND}:${BUILD_NUMBER}
+                            docker push ${ECR_BACKEND}:latest
+                        '''
+                    }
                 }
             }
         }
@@ -137,28 +139,32 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 script {
-                    sh '''
-                        aws eks update-kubeconfig --name ${EKS_CLUSTER} --region ${AWS_REGION}
-                        kubectl apply -f application/k8s-prod/00-namespace.yaml
-                        kubectl apply -f application/k8s-prod/01-secrets.yaml
-                        kubectl apply -f application/k8s-prod/mysql.yaml
-                        sleep 30
-                        kubectl apply -f application/k8s-prod/backend.yaml
-                        kubectl apply -f application/k8s-prod/frontend.yaml
-                        kubectl apply -f application/k8s-prod/ingress.yaml
+                    withCredentials([aws(credentialsId: 'aws-creds', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh '''
+                            aws eks update-kubeconfig --name ${EKS_CLUSTER} --region ${AWS_REGION}
+                            kubectl apply -f application/k8s-prod/00-namespace.yaml
+                            kubectl apply -f application/k8s-prod/01-secrets.yaml
+                            kubectl apply -f application/k8s-prod/mysql.yaml
+                            sleep 30
+                            kubectl apply -f application/k8s-prod/backend.yaml
+                            kubectl apply -f application/k8s-prod/frontend.yaml
+                            kubectl apply -f application/k8s-prod/ingress.yaml
                         kubectl apply -f application/k8s-prod/hpa.yaml
-                    '''
+                        '''
+                    }
                 }
             }
         }
         
         stage('Verify Deployment') {
             steps {
-                sh '''
-                    kubectl get pods -n production
-                    kubectl get svc -n production
-                    kubectl get ingress -n production
-                '''
+                withCredentials([aws(credentialsId: 'aws-creds', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh '''
+                        kubectl get pods -n production
+                        kubectl get svc -n production
+                        kubectl get ingress -n production
+                    '''
+                }
             }
         }
     }
