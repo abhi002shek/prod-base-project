@@ -44,7 +44,7 @@ Build a production-ready AWS infrastructure with:
 │  │  │  DB Subnet      │         │  DB Subnet      │      │  │
 │  │  │   (AZ-1)        │         │   (AZ-2)        │      │  │
 │  │  │                 │         │                 │      │  │
-│  │  │  - RDS Primary  │         │  - RDS Standby  │      │  │
+│  │  │  (Optional RDS) │         │  (Not used)     │      │  │
 │  │  └─────────────────┘         └─────────────────┘      │  │
 │  └──────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
@@ -61,7 +61,7 @@ Build a production-ready AWS infrastructure with:
 **Components:**
 - **VPC Module** - Creates network with 8 subnets across 2 AZs
 - **EKS Module** - Kubernetes cluster with managed node groups
-- **RDS Module** - PostgreSQL database with Multi-AZ
+- **RDS Module** - PostgreSQL database (optional, not used by application)
 - **Bastion Module** - Secure jump host for SSH access
 - **Security Groups** - Firewall rules for all resources
 - **Secrets Module** - AWS Secrets Manager for sensitive data
@@ -220,10 +220,10 @@ Build a production-ready AWS infrastructure with:
 - Secrets management
 
 ### Layer 3: Data Security
-- KMS encryption (EKS, RDS, Secrets)
+- KMS encryption (EKS, Secrets)
 - Encrypted EBS volumes
 - SSL/TLS for data in transit
-- Database encryption at rest
+- Database encryption at rest (MySQL in Kubernetes)
 
 ### Layer 4: Application Security
 - Container image scanning (Trivy)
@@ -245,7 +245,7 @@ Build a production-ready AWS infrastructure with:
 |-----------|--------------|-------|
 | EKS Cluster | $73 | Control plane |
 | EC2 Nodes (4x t3.medium) | $120 | Worker nodes |
-| RDS (db.t3.micro) | $30 | Database |
+| RDS (db.t3.micro) | $30 | Optional, not used |
 | NAT Gateways (2x) | $65 | Outbound traffic |
 | ALB | $23 | Load balancer |
 | Bastion (t3.micro) | $8 | Jump host |
@@ -253,6 +253,7 @@ Build a production-ready AWS infrastructure with:
 | Jenkins EC2 (t3.medium) | $30 | CI/CD server |
 | SonarQube EC2 (t3.medium) | $30 | Code quality |
 | **Total** | **~$389/month** | Full production setup |
+| **Without RDS** | **~$359/month** | Recommended |
 
 **Cost Optimization Tips:**
 - Use Spot instances for non-critical workloads

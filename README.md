@@ -28,7 +28,7 @@ Prod-base-project/
 │   ├── modules/                  # Reusable Terraform modules
 │   │   ├── vpc/                  # VPC with public/private subnets
 │   │   ├── eks/                  # EKS cluster + node groups
-│   │   ├── rds/                  # PostgreSQL database
+│   │   ├── rds/                  # RDS module (optional, not used by app)
 │   │   ├── bastion/              # Bastion host for secure access
 │   │   ├── security-groups/      # Security group rules
 │   │   └── secrets/              # AWS Secrets Manager
@@ -111,7 +111,7 @@ terraform apply
 This deploys:
 - VPC with 8 subnets (public/private across 2 AZs)
 - EKS cluster with managed node groups
-- RDS PostgreSQL database
+- RDS PostgreSQL database (optional, not used by application)
 - Bastion host
 - Security groups
 - KMS encryption keys
@@ -409,7 +409,7 @@ kubectl get ingress -n production
 | **VPC** | 8 subnets across 2 AZs | Free |
 | **EKS Cluster** | Kubernetes 1.28 | $73 |
 | **Worker Nodes** | 2-4 t3.medium instances | $60-120 |
-| **RDS PostgreSQL** | db.t3.micro, Multi-AZ | $30 |
+| **RDS PostgreSQL** | db.t3.micro, Multi-AZ (optional) | $30 |
 | **NAT Gateways** | 2 for high availability | $65 |
 | **Application Load Balancer** | For ingress traffic | $23 |
 | **Bastion Host** | t3.micro | $8 |
@@ -429,13 +429,15 @@ kubectl get ingress -n production
 ### Security Features
 
 ✅ Private subnets for workloads  
-✅ KMS encryption (EKS, RDS, Secrets)  
+✅ KMS encryption (EKS, Secrets)  
 ✅ Security groups with least privilege  
 ✅ IMDSv2 enforced  
 ✅ VPC Flow Logs enabled  
 ✅ Container image scanning (Trivy)  
 ✅ Code quality scanning (SonarQube)  
 ✅ Secrets management (Kubernetes Secrets)  
+
+**Note:** RDS PostgreSQL is provisioned by Terraform but not used by the application. The app uses MySQL running in Kubernetes.  
 
 ---
 
@@ -660,4 +662,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ If you find this project helpful, please give it a star!**
 
-**🔗 Connect:** [LinkedIn](https://linkedin.com/in/your-profile) | [GitHub](https://github.com/your-username)
+**🔗 Connect:** [LinkedIn](https://www.linkedin.com/in/abhishek-singh-2b96961a0/) | [GitHub](https://github.com/abhi002shek)
