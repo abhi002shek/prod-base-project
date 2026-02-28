@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/backend:latest  # REPLACE with your ECR image
+        image: 616919332376.dkr.ecr.ap-south-1.amazonaws.com/prod-base-project/backend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
