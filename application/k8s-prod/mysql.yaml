@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
-  namespace: prod
+  namespace: production
 spec:
   accessModes:
     - ReadWriteOnce
@@ -15,7 +15,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-  namespace: prod
+  namespace: production
 spec:
   serviceName: mysql
   replicas: 1
@@ -83,7 +83,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql
-  namespace: prod
+  namespace: production
 spec:
   clusterIP: None
   selector:
